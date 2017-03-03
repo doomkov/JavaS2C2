@@ -67,7 +67,41 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-	    return 0;
+		
+		int count = 0;
+		String vowels = "aeiouy";
+		
+		for (int x = 1; x < word.length(); x++) {
+			Character cur = Character.toLowerCase(word.charAt(x));
+			Character prev = Character.toLowerCase(word.charAt(x-1));
+			// System.out.print(cur);
+			// System.out.print(cur.equals('e')+" ");
+			
+			if (vowels.indexOf(cur.toString()) > -1 && vowels.indexOf(prev.toString()) == -1 && x != word.length()-1) {
+				count++;
+			}
+			else if (vowels.indexOf(cur.toString()) > -1 && vowels.indexOf(prev.toString()) == -1 && x == word.length()-1 && cur.equals('e') == false) {
+				count++;
+			}
+		}
+		if(word.length() > 1) {
+			Character firstChar = Character.toLowerCase(word.charAt(0));
+			Character secChar = Character.toLowerCase(word.charAt(1));
+			
+			if(vowels.indexOf(firstChar.toString()) > -1) {
+				count++;
+			}
+		}
+		else {
+			Character c = Character.toLowerCase(word.charAt(0));
+			if(vowels.indexOf(c.toString()) > -1){
+				count++;
+			}
+		}
+		if (count == 0) {count = 1;}
+		
+		//System.out.print(count + " ");
+		return count;
 	}
 	
 	/** A method for testing
@@ -131,7 +165,12 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method in week 1
-	    return 0.0;
+		float numWords = getNumWords();
+		float numSentences = getNumSentences();
+		float numSyllables = getNumSyllables();
+		double score = 206.835 - 1.015 * (numWords/numSentences) - (84.6 * (numSyllables/numWords));
+		return score;
+	    
 	}
 	
 	

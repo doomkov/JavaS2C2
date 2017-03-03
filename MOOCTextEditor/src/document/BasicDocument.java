@@ -34,9 +34,9 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumWords()
 	{
-		//TODO: Implement this method in week 1 according to the comments above.  
-		// See the Module 1 support videos if you need help.
-	    return 0;
+		List<String> tokens = this.getTokens("[a-zA-Z]+");
+		return tokens.size();
+		
 	}
 	
 	/**
@@ -54,9 +54,9 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumSentences()
 	{
-	    //TODO: Implement this method.  See the Module 1 support videos 
-        // if you need help.
-        return 0;
+		List<String> tokens = this.getTokens("[^.!?]+");
+		return tokens.size();
+		
 	}
 	
 	/**
@@ -81,7 +81,14 @@ public class BasicDocument extends Document
 		// expression for the syllable counting.  We recommend you implement 
 		// the helper function countSyllables in Document.java using a loop, 
 		// and then call it here on each word.
-        return 0;
+		
+		List<String> tokens = this.getTokens("[a-zA-Z]+");
+		int count = 0;
+		for (String word : tokens) {
+			count = count + countSyllables(word);
+		}
+		
+        return count;
 	}
 	
 	
@@ -111,6 +118,13 @@ public class BasicDocument extends Document
 		testCase(new BasicDocument("Sentences?!"), 3, 1, 1);
 		testCase(new BasicDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
+
+		Document test1 = new BasicDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad.");
+		System.out.print(test1.getText() + "\n....");
+		System.out.println("Flesch score is: " + test1.getFleschScore());
+		
+		Document d = new BasicDocument("one (1), two (2), three (3)");
+		System.out.println(d.getTokens("[a-z]+|[()0-9]+"));
 	}
 	
 }
