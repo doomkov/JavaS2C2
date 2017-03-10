@@ -86,7 +86,6 @@ public abstract class Document {
 		}
 		if(word.length() > 1) {
 			Character firstChar = Character.toLowerCase(word.charAt(0));
-			Character secChar = Character.toLowerCase(word.charAt(1));
 			
 			if(vowels.indexOf(firstChar.toString()) > -1) {
 				count++;
@@ -99,9 +98,33 @@ public abstract class Document {
 			}
 		}
 		if (count == 0) {count = 1;}
-		
 		//System.out.print(count + " ");
 		return count;
+	}
+	
+	protected static int countSyllables2(String word)
+	{
+	    //System.out.print("Counting syllables in " + word + "...");
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+				newSyllable = false;
+				numSyllables++;
+			}
+			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+				newSyllable = true;
+			}
+		}
+		//System.out.println( "found " + numSyllables);
+		return numSyllables;
 	}
 	
 	/** A method for testing
