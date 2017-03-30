@@ -12,13 +12,13 @@ import java.util.LinkedList;
  * @author You
  *
  */
-public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
+public class AutoCompleteMatchCase implements  Dictionary, AutoComplete {
 
     private TrieNode root;
     private int size;
     
 
-    public AutoCompleteDictionaryTrie()
+    public AutoCompleteMatchCase()
 	{
 		root = new TrieNode();
 	}
@@ -41,27 +41,17 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-		word = word.toLowerCase();
-		int wordSize = word.length();
-		TrieNode prevNode = root;
-		TrieNode curNode;
 		
-		for (int i = 0; i < wordSize; i++){
-			char c = word.charAt(i);
-			curNode = prevNode.insert(c);
-			
-			if(curNode == null) {
-				curNode = prevNode.getChild(c);
-			}
-			if(curNode.getText().equals(word) && curNode.endsWord() == false) {
-				curNode.setEndsWord(true);
-				this.size = size + 1;
-				return true;
-			}
-			prevNode = curNode;
-			
+		String firstCap = "";
+		if(word.length() > 1) {
+		firstCap = word.substring(0, 1).toUpperCase() + word.substring(1);
 		}
-	    return false;
+		boolean retValue;
+		
+		addNode(word.toUpperCase());
+		addNode(word);
+		retValue = addNode(firstCap);
+		return retValue;
 	}
 	
 	/** 
@@ -81,7 +71,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		s = s.toLowerCase();
+		
 		int wordSize = s.length();
 		TrieNode prevNode = root;
 		TrieNode curNode;
@@ -126,8 +116,11 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
      public List<String> predictCompletions(String prefix, int numCompletions) 
      {
     	 // TODO: Implement this method
-    	 prefix = prefix.toLowerCase();
+    	 
+
     	 List<String> compList = new ArrayList<String>();
+
+
     	 TrieNode firstNode = new TrieNode();
     	 firstNode = root;
 
@@ -156,9 +149,37 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     			 queue.add(curNode.getChild(c));
     		 }
     	 }
+    	 
          return compList;
      }
 
+     
+ 	private boolean addNode(String word)
+ 	{
+ 	    //TODO: Implement this method.
+ 		
+ 		int wordSize = word.length();
+ 		TrieNode prevNode = root;
+ 		TrieNode curNode;
+ 		
+ 		for (int i = 0; i < wordSize; i++){
+ 			char c = word.charAt(i);
+ 			curNode = prevNode.insert(c);
+ 			
+ 			if(curNode == null) {
+ 				curNode = prevNode.getChild(c);
+ 			}
+ 			if(curNode.getText().equals(word) && curNode.endsWord() == false) {
+ 				curNode.setEndsWord(true);
+ 				this.size = size + 1;
+ 				return true;
+ 			}
+ 			prevNode = curNode;
+ 			
+ 		}
+ 	    return false;
+ 	}
+     
  	// For debugging
  	public void printTree()
  	{
